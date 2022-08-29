@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %} OTP Verify {% endblock %}
+
+{% block head %}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        background:#05020080;
+    }
+    .form-gap {
+        padding-top: 70px;
+    }
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<div class="form-gap"></div><br><br>
+<h4>
+  {% if messages %}
+  {% for message in messages %}
+      <div class="alert alert-dismissible alert-info">
+      <button type="button" class="close" data-dismiss="alert">
+      ×
+      </button>
+      <strong>{{message}}</strong>
+      </div>
+  {% endfor %}
+  {% endif %}
+</h4>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4"><br>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="text-center">
+            <h1><i class="fa fa-key" aria-hidden="true"></i></h1>
+            <h3 class="text-center">Email Verification</h3>
+            <p>Enter the code we just send on your Email</p>
+            <div class="panel-body">
+
+              <form action="{% url 'otp' %}" class="form" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <div class="input-group">
+                    <input class="form-control" id="uotp" name="uotp" placeholder="Enter OTP" type="text" autofocus required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Verify" type="submit">
+                </div>
+                <div class="text-center"><a href="{% url 'signup' %}">Click hear to Cancel</a></div>
+                <input type="hidden" class="hide" name="otp" id="otp" value="{{otp}}"> 
+              </form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

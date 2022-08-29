@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <style>
+        * {
+          box-sizing: border-box;
+        }
+        
+        /* Create two equal columns that floats next to each other */
+        .column {
+          float: left;
+          width: 50%;
+          padding: 10px;
+          height: 300px; /* Should be removed. Only for demonstration */
+        }
+        
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+        body {
+            font-family: Arial;
+          }
+          
+          * {
+            box-sizing: border-box;
+          }
+          
+          form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+          }
+          
+          form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+          }
+          
+          form.example button:hover {
+            background: #0b7dda;
+          }
+          
+          form.example::after {
+            content: "";
+            clear: both;
+            display: table;
+          }
+        </style>
+</head>
+<body>
+    <script>
+        function myFunction() {
+          var checkBox = document.getElementById("myCheck");
+          var text = document.getElementById("text");
+          if (checkBox.checked == true){
+            text.style.display = "block";
+          } else {
+             text.style.display = "none";
+          }
+        }
+    </script>
+
+    <h1>Explore Our Watch Library</h1><br>
+    <div class="row">
+        <form action="{% url 'library' %}" method="POST">
+            {% csrf_token %}
+            <div class="column">
+                <label for="filter type">FILTER BY CATEGORY</label><br>
+                <input type="checkbox" id="name" name="name" value="mens">  
+                <label>Mens</label><br>
+                <input type="checkbox" id="name" name="name" value="womens">  
+                <label>Womens</label><br>
+                <input type="checkbox" id="name" name="name" value="kids">  
+                <label>Kids</label><br>
+                <button type="submit">submit</button><br><br><br><br>              
+                
+                <label for="category">CATEGORY</label> <br>
+                <select name="category" id="category">
+                    <option value="">Select</option>
+                    <option value="mens">Men</option>
+                    <option value="womens">Women</option>
+                    <option value="kids">Kids</option>
+                </select>
+                <button type="submit">submit</button> <br><br><br><br>
+
+                <label for="filter date">FILTER BY DATE</label><br>
+                <select name="month" id="month">
+                    <option value="volvo">month</option>
+                    <option value="volvo">month</option>
+                </select><br><br>
+                <select name="year" id="year">
+                    <option value="volvo">year</option>
+                    <option value="volvo">year</option>
+                </select><br><br>   
+            </div>
+        </form>
+
+        <div class="column">
+            <form class="example" method="POST" action="{% url 'search' %}" style="max-width:700px">
+                {% csrf_token %}
+                <input type="text" placeholder="What are you looking for?" name="search">
+                <button type="submit">Search</button>
+            </form><br><br>
+            Search Related Results :<br><br>
+            {% if product %}
+                {% for p in product %}   
+                    <div class="column">
+                        <div class="thumb">
+                            <img src="{{p.upload.url}}" alt="" width="100" height="150">
+                        </div>   
+                        <h4>{{p.product_name}}</h4>
+                        <span>Rs. {{p.product_price}}</span>
+                    </div> 
+                {% endfor %}
+            {% endif %}
+            
+            {% if data %}
+                {% for p in data %}   
+                    <div class="column">
+                        <div class="thumb">
+                            <img src="{{p.upload.url}}" alt="" width="100" height="150">
+                        </div>   
+                        <h4>{{p.product_name}}</h4>
+                        <span>Rs. {{p.product_price}}</span>
+                    </div> 
+                {% endfor %}
+            {% endif %}
+            {{msg}}
+
+        </div>
+    </div>
+</body>
+</html>
